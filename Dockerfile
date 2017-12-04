@@ -57,17 +57,19 @@ RUN conda install -y scipy
 RUN pip install tensorflow pillow lxml jupyter matplotlib protobuf
 
 RUN git clone https://github.com/tensorflow/models.git /opt/tensorflow-models
-WORKDIR /opt/tensorflow-models
+WORKDIR /opt/tensorflow-models/research
 RUN pip install -e .
 RUN protoc object_detection/protos/*.proto --python_out=.
-ENV PYTHONPATH $PYTHONPATH:/opt/tensorflow-models:/opt/tensorflow-models/slim
+ENV PYTHONPATH $PYTHONPATH:/opt/tensorflow-models/research:/opt/tensorflow-models/research/slim
 RUN python object_detection/builders/model_builder_test.py
 
-WORKDIR /opt/tensorflow-models-object_detection
+WORKDIR /opt/tensorflow-models/research
 RUN wget http://download.tensorflow.org/models/object_detection/ssd_mobilenet_v1_coco_11_06_2017.tar.gz && \
     tar xzf ssd_mobilenet_v1_coco_11_06_2017.tar.gz && \
     rm ssd_mobilenet_v1_coco_11_06_2017.tar.gz
 WORKDIR /app
 RUN pip install flask
 ADD docker/service/ /etc/service/
+ADD app.py /app/app.py
+RUN ls
 
