@@ -1,0 +1,43 @@
+apiVerison: 1
+kind: 'Service'
+metadata:
+  name: '$APP'
+  labels:
+    app: '$APP'
+    dns: route53
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: $CERT
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+    domainName: '$DOMAIN'
+spec:
+  selector:
+    app: '$APP'
+  ports:
+    - protocol: 'TCP'
+      port: 443
+      targetPort: 5000
+  type: 'LoadBalancer'
+---
+apiVersion: extensions/v1beta1
+kind: 'Deployment'
+metadata:
+  name: '$APP'
+  labels:
+    app: '$APP'
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: '$APP'
+    spec:
+      containers:
+        - name: '$APP'
+          image: '$IMAGE:$VERSION'
+          ports:
+            - containerPort: 5000
+          env:
+            - name: JUSTFOOTBALL_ENV
+              value: '$ENV'
+      imagePullSecrets:
+        - name: registry-key
