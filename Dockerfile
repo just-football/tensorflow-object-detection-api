@@ -18,11 +18,11 @@ RUN apt-get update && \
 	rm -rf /var/lib/apt/lists/*
 
 # Deactivate unused services
-RUN mv /etc/service/cron /etc/service/.cron
-RUN mv /etc/service/sshd /etc/service/.sshd
-RUN mv /etc/service/syslog-ng /etc/service/.syslog-ng
-RUN mv /etc/service/syslog-forwarder /etc/service/.syslog-forwarder
-RUN chmod 444 /etc/my_init.d/00_regen_ssh_host_keys.sh
+#RUN mv /etc/service/cron /etc/service/.cron
+#RUN mv /etc/service/sshd /etc/service/.sshd
+#RUN mv /etc/service/syslog-ng /etc/service/.syslog-ng
+#RUN mv /etc/service/syslog-forwarder /etc/service/.syslog-forwarder
+#RUN chmod 444 /etc/my_init.d/00_regen_ssh_host_keys.sh
 
 RUN apt-get update && apt-get install -y \
     wget \
